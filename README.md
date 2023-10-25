@@ -1,5 +1,7 @@
 # Functional and Formal Verification of Digital Design 
 
+Team Members:Sindhu, Anurup, Tanushree, Dhanush
+
 Topic: Debouncing Circuit 
 
 State Diagram:
