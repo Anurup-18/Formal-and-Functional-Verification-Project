@@ -1,98 +1,23 @@
-module debounce_fsmd(
-input wire clk,reset,
-input wire sw,
-output reg db_tick,db_level
-);
+module usr
+#(parameter N=8)
+(input wire clk, rst,
+input wire [1:0] ctrl,
+input wire [N-1:0] d,
+output wire [N-1:0] q);
 
-localparam[1:0] 
-	zero = 2'b00,
-	wait0 = 2'b01,
-	one = 2'b10,
-	wait1 = 2'b11;
-
-
-localparam N = 5;
-
-reg [N-1:0] q_reg,q_next;
-reg [1:0] state_reg, state_next;
-
-always@(posedge clk, posedge reset)
-	if(reset)
-		begin
-		state_reg<=zero;
-		q_reg<=0;
-		end
+reg [N-1:0] r_reg, r_next;
+always @(posedge clk, posedge rst)
+	if (rst)
+		r_reg <= 0 ;
 	else
-		begin 
-		state_reg<=state_next;
-		q_reg<=q_next;
-		end
+		r_reg<=r_next;
 
-//next state logic
-always@* begin
-
-	state_next=state_reg;
-	q_next=q_reg;
-	db_tick=1'b0;
-	case(state_reg)
-		zero: begin
-		db_level = 1'b0;
-		if(sw)
-		begin 
-		state_next=wait1;
-		q_next={N{1'b1}};
-		end
-		end
-
-	wait1: begin
-		db_level = 1'b0;
-		if(sw) begin 
-			q_next=q_reg-1;
-			if(q_next == 0)
-				begin
-				db_tick=1;
-				state_next=one;
-				end
-			
-			else
-				state_next=wait1;
-		end
-		else
-			state_next=zero;
-
-		end
-
-
-	one: begin
-		db_level = 1'b1;
-		if(sw)
-			state_next=one;
-		else
-			begin 
-			q_next = {N{1'b1}};
-			state_next = wait0;
-			end
-		end
-
-	wait0: begin
-		db_level = 1'b1;
-		if(~sw)
-		begin 
-		q_next=q_reg-1;
-		if(q_next == 0)
-
-		begin
-		db_tick=1'b1;
-		state_next=zero;
-		end
-		else
-		state_next = wait0;
-		end
-		else
-		state_next=one;
-		end
-	
-endcase
-end
+always@*
+	case(ctrl)
+		2'b00:r_next=r_reg;
+		2'b01:r_next={r_reg[N-2:0],d[0]};
+		2'b10: r_next={d[N-1],r_reg[N-1:1]};
+		default: r_next=d;
+	endcase
+assign q=r_reg;
 endmodule
-
