@@ -2,14 +2,15 @@
 
 Team Members:Sindhu, Anurup, Tanushree, Dhanush
 
-Topic: Debouncing Circuit 
+Topic: Universal Shift Register 
 
-State Diagram:
-![image](https://github.com/SindhuCP/FFVDD/assets/148478177/f40f45f9-6e76-4fb4-b948-8d9c329b163f)
+Schematic Diagram:
+<img width="410" alt="image" src="https://github.com/SindhuCP/FFVDD/assets/148478177/38bec85e-9e85-40e2-810d-e150b322a9e1">
+
 
 Output Waveform:
-![image](https://github.com/SindhuCP/FFVDD/assets/148478177/6ec5937c-b207-45ed-a0b2-e5b8f85a2e36)
+<img width="752" alt="image" src="https://github.com/SindhuCP/FFVDD/assets/148478177/7994feed-f7b0-46b9-bcfb-57800223d33e">
+
 
 Code Coverage:
-<img width="754" alt="image" src="https://github.com/SindhuCP/FFVDD/assets/148478177/3d70330d-191a-4bd0-a790-08295889aa61">
-
+<img width="754" alt="image" src="https://github.com/SindhuCP/FFVDD/assets/148478177/efe6063b-6f05-48c5-8177-1fed2689066a">
