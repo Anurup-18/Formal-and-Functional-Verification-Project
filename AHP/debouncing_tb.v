@@ -1,32 +1,67 @@
-module debouncing_tb;
+module usr_tb;
+  // parameters
+  parameter n = 8;
 
-reg clk,reset;
-reg sw;
-wire db_tick,db_level;
+  // signals
+  reg clock;
+  reg reset;
+  reg [1:0] ctrl;
+  reg [n-1:0] d;
+  wire [n-1:0] q;
 
-debounce_fsmd dut(clk, reset, sw, db_tick, db_level);
+  // instantiate the universal shift register module
+  usr #(n) u1 (
+    .clock(clock),
+    .reset(reset),
+    .ctrl(ctrl),
+    .d(d),
+    .q(q)
+  );
 
-always begin
-clk=1'b0;
-#10 
-clk = 1'b1;
-#10;
-end
+  // clock generation
+  always begin
+    #5 clock = ~clock;
+  end
 
-initial begin 
-reset=1;
-sw=0;
-#10 sw=1'b1;
+  // initialize signals
+  initial begin
+    clock = 0;
+    reset = 0;
+    ctrl = 2'b00;
+    d = 8'b00000000;
 
-#10 reset=0;
-#10 sw=1;
-#100 sw=0;
-#100 sw=1;
-#2500 sw=0;
-#10 sw=1;
-#100 sw=0;
-#2500;
-$finish;
-end
+    // apply reset
+    reset = 1;
+    #10 reset = 0;
 
+    // perform some shift operations
+    ctrl = 2'b01; // right shift
+    d = 8'b11011011;
+    #10;
+
+    ctrl = 2'b10; // left shift
+    #10;
+
+    ctrl = 2'b11; // load from input
+    d = 8'b10101010;
+    #10;
+
+    // additional test cases
+    ctrl = 2'b00; // no shift
+    #10;
+
+    ctrl = 2'b01; // right shift
+    d = 8'b10101010;
+    #10;
+
+    ctrl = 2'b10; // left shift
+    d = 8'b01010101;
+    #10;
+
+    ctrl = 2'b11; // load from input
+    d = 8'b11110000;
+    #10;
+
+    $finish; // finish the simulation
+  end
 endmodule
