@@ -30,6 +30,4 @@ Notes:
 
 
 Code Coverage:
-
-Without Layered Testbench:
 <img width="754" alt="image" src="https://github.com/SindhuCP/FFVDD/assets/148478177/efe6063b-6f05-48c5-8177-1fed2689066a">
